@@ -11,7 +11,7 @@ public class MenuScene: IScene
     private SpriteFont _font;
 
     private Rectangle _buttonReact;
-    private Color _buttonColor = Color.White;
+    private Color _buttonColor = Color.Blue;
     private bool _isHovering;
     
     public bool StartGameRequested { get; private set; }
@@ -47,7 +47,7 @@ public class MenuScene: IScene
         var mousePoint = new Point(mouse.X, mouse.Y);
         
         _isHovering = _buttonReact.Contains(mousePoint);
-        _buttonColor = _isHovering ? Color.Red : Color.Blue;
+        _buttonColor = _isHovering ? Color.Red : Color.Black;
 
         if (_isHovering && mouse.LeftButton == ButtonState.Pressed)
         {

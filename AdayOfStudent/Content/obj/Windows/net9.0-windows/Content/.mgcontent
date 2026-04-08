@@ -6,8 +6,10 @@
   <SourceFiles>
     <File>C:/Users/gats/RiderProjects/AdayOfStudent/AdayOfStudent/Content/background.png</File>
     <File>C:/Users/gats/RiderProjects/AdayOfStudent/AdayOfStudent/Content/DefaultFont.spritefont</File>
+    <File>C:/Users/gats/RiderProjects/AdayOfStudent/AdayOfStudent/Content/predislovie.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>

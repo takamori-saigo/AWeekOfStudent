@@ -10,10 +10,10 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SceneManager _sceneManager;
-    
+    private bool isFirstStart = true;
     private MenuScene _menuScene;
     private GameplayScene _gameplayScene;
-    
+    private FirstStartGameScene _firstStartGameScene;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -22,7 +22,7 @@ public class Game1 : Game
         
         _graphics.PreferredBackBufferWidth = 1600;
         _graphics.PreferredBackBufferHeight = 900;
-        _graphics.IsFullScreen = false; // Пока окно, можно потом сделать true
+        _graphics.IsFullScreen = false; 
         _graphics.ApplyChanges();
     }
 
@@ -32,10 +32,11 @@ public class Game1 : Game
         
         _menuScene = new MenuScene(this);
         _gameplayScene = new GameplayScene(this);
-            
+        _firstStartGameScene = new FirstStartGameScene(this);
+        
         _sceneManager.AddScene("menu", _menuScene);
         _sceneManager.AddScene("gameplay", _gameplayScene);
-        
+        _sceneManager.AddScene("predislovie", _firstStartGameScene);
         _sceneManager.SwitchTo("menu");
 
         base.Initialize();
@@ -59,7 +60,7 @@ public class Game1 : Game
         if (_menuScene.StartGameRequested)
         {
             _gameplayScene.Reset();
-            _sceneManager.SwitchTo("gameplay");
+            _sceneManager.SwitchTo("predislovie");
             _menuScene.Reset();
         }
         
@@ -73,7 +74,7 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Coral);
+        GraphicsDevice.Clear(Color.LightPink);
 
         _spriteBatch.Begin();
         _sceneManager.Draw(_spriteBatch);
