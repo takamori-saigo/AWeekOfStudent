@@ -14,6 +14,7 @@ public class Game1 : Game
     private MenuScene _menuScene;
     private GameplayScene _gameplayScene;
     private FirstStartGameScene _firstStartGameScene;
+    
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -37,7 +38,8 @@ public class Game1 : Game
         _sceneManager.AddScene("menu", _menuScene);
         _sceneManager.AddScene("gameplay", _gameplayScene);
         _sceneManager.AddScene("predislovie", _firstStartGameScene);
-        _sceneManager.SwitchTo("menu");
+        
+        _sceneManager.SwitchTo("gameplay");
 
         base.Initialize();
     }
@@ -51,30 +53,28 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (Keyboard.GetState().IsKeyDown(Keys.Escape) && 
-            _sceneManager.CurrentScene?.GetType().Name == "MenuScene")
-            Exit();
-
         _sceneManager.Update(gameTime);
 
         if (_menuScene.StartGameRequested)
         {
-            _gameplayScene.Reset();
             _sceneManager.SwitchTo("predislovie");
             _menuScene.Reset();
         }
         
-        if (_gameplayScene.ExitToMenuRequested)
+
+        if (_firstStartGameScene.StartTheGame)
         {
-            _sceneManager.SwitchTo("menu");
-            _menuScene.Reset();
+            _sceneManager.SwitchTo("gameplay");
         }
+        
+        
+        
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Black);
+        GraphicsDevice.Clear(Color.LightPink);
 
         _spriteBatch.Begin();
         _sceneManager.Draw(_spriteBatch);

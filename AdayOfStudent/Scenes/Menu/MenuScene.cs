@@ -26,7 +26,7 @@ public class MenuScene: IScene
     public void Initialize()
     {
         StartGameRequested = false;
-
+        
         var buttonWidth = 300;
         var buttonHeight = 70;
 

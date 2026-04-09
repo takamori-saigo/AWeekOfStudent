@@ -1,50 +1,59 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+    using AdayOfStudent.Entities;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
 
-namespace AdayOfStudent.Scenes;
+    namespace AdayOfStudent.Scenes;
 
-public class GameplayScene: IScene
-{
-    private Game _game;
-    
-    public bool ExitToMenuRequested { get; private set; }
-    
-    public GameplayScene(Game game)
+    public class GameplayScene: IScene
     {
-        _game = game;
-    }
-    
-    public void Initialize()
-    {
-        ExitToMenuRequested = false;
-    }
+        private Game _game;
+        private Texture2D _pixel;
 
-    public void LoadContent()
-    {
+        public bool ExitToMenuRequested { get; private set; }
         
-    }
-
-    public void Update(GameTime gameTime)
-    {
-        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+        public GameplayScene(Game game)
         {
-            ExitToMenuRequested = true;
+            _game = game;
+        }
+        
+        public void Initialize()
+        {
+            Player.PlayerRectangle = new Rectangle(_game.GraphicsDevice.Viewport.Width / 2 - 300 / 2,
+            _game.GraphicsDevice.Viewport.Height / 2 - 70 / 2, 300, 70);
+            
+            ExitToMenuRequested = false;
+            _pixel = new Texture2D(_game.GraphicsDevice, 1, 1);
+            _pixel.SetData(new[] { Color.Purple });
+        }
+
+        public void LoadContent()
+        {
+            
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                ExitToMenuRequested = true;
+            }
+            
+            Player.Move();
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(_pixel, Player.PlayerRectangle, Color.Red);
+        }
+
+        public void Reset()
+        {
+            Initialize();
+        }
+        
+        public void unloadContent()
+        {
+            
         }
     }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        
-    }
-
-    public void Reset()
-    {
-        Initialize();
-    }
-    
-    public void unloadContent()
-    {
-        throw new System.NotImplementedException();
-    }
-}

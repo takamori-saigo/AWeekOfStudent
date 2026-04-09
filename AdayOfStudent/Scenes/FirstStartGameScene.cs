@@ -1,6 +1,7 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 
 namespace AdayOfStudent.Scenes;
 
@@ -11,8 +12,18 @@ public class FirstStartGameScene: IScene
     private float _alpha = 0f;
     private float _fadeSpeed = 0.4f;
     private bool _isFading = true;
-    private bool _isComplete = false;
+    private bool _isComplete;
+    private bool _isKeyWasPressed;
     
+    public bool StartTheGame
+    {
+        get
+        {
+            return _isKeyWasPressed;
+        }
+        private set{}
+    }
+
     public FirstStartGameScene(Game game)
     {
         _game = game;
@@ -30,7 +41,7 @@ public class FirstStartGameScene: IScene
 
     public void Update(GameTime gameTime)
     {
-        if (_isComplete) return;
+
         var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         
         if (_isFading)
@@ -39,6 +50,18 @@ public class FirstStartGameScene: IScene
             if (_alpha >= 1)
             {
                 _isComplete = true;
+            }
+        }
+
+        if (_isComplete)
+        {
+            var keyboardState = Keyboard.GetState();
+            var mouse = Mouse.GetState();
+            if (keyboardState.GetPressedKeyCount() > 0 || 
+                mouse.RightButton == ButtonState.Pressed ||
+                mouse.LeftButton == ButtonState.Pressed)
+            {
+                _isKeyWasPressed = true;
             }
         }
     }
