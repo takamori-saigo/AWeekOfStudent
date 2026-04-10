@@ -12,12 +12,12 @@ public class Animation
     public int Row { get; set; }
     public float FrameTime { get; set; }
     public bool IsLooping { get; set; }
-
+    public int FrameOfCalmp { get; set; }
     private int _currentFrame;
     private float _timeAccumulator;
     
     public Animation(Texture2D spriteSheet, int frameWidth, int frameHeight, 
-        int frameCount, int row = 0, float frameTime = 0.1f, bool isLooping = true)
+        int frameCount, int row = 0, float frameTime = 0.15f, bool isLooping = true, int frameOfICalmp = 1)
     {
         SpriteSheet = spriteSheet;
         FrameWidth = frameWidth;
@@ -28,6 +28,7 @@ public class Animation
         IsLooping = isLooping;
         _currentFrame = 0;
         _timeAccumulator = 0;
+        FrameOfCalmp = frameOfICalmp;
     }
 
     public void Update(GameTime gameTime)
@@ -45,10 +46,6 @@ public class Animation
                 {
                     _currentFrame = 0;
                 }
-                else
-                {
-                    _currentFrame = FrameCount - 1;
-                }
             }
         }
     }
@@ -62,5 +59,10 @@ public class Animation
     {
         _currentFrame = 0;
         _timeAccumulator = 0;
+    }
+
+    public Rectangle GetCalmStateFrame()
+    {
+        return new Rectangle(FrameOfCalmp * FrameWidth, Row * FrameHeight, FrameWidth, FrameHeight);
     }
 }

@@ -29,3 +29,4 @@ C:\Users\gats\RiderProjects\AdayOfStudent\AdayOfStudent\bin\Debug\net9.0-windows
 C:\Users\gats\RiderProjects\AdayOfStudent\AdayOfStudent\bin\Debug\net9.0-windows\Content\DefaultFont.xnb
 C:\Users\gats\RiderProjects\AdayOfStudent\AdayOfStudent\obj\Debug\net9.0-windows\AdayOfStudent.sourcelink.json
 C:\Users\gats\RiderProjects\AdayOfStudent\AdayOfStudent\bin\Debug\net9.0-windows\Content\predislovie.xnb
+C:\Users\gats\RiderProjects\AdayOfStudent\AdayOfStudent\bin\Debug\net9.0-windows\Content\player.xnb

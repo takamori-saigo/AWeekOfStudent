@@ -1,17 +1,17 @@
 using AdayOfStudent.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AdayOfStudent.Entities;
 
 public static class Player
 {
     public static Vector2 Position;
-    public static readonly float speed = 15f;
+    public static readonly float speed = 70f;
     public static int Width;
     public static int Height;
     
-    private static Animation _idleAnimation;
     private static Animation _walkDownAnimation;
     private static Animation _walkUpAnimation;
     private static Animation _walkLeftAnimation;
@@ -21,36 +21,95 @@ public static class Player
     private static bool _isMoving;
     
     public static Rectangle PlayerRectangle => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
-
-    public static void LoadAnimations(Game game)
-    {
-        var spriteSheet = game.Content.Load<Texture2D>("Player");
-    }
     
-    public static void Move()
+    public static void Move(GameTime gameTime)
     {
-        var x = 0;
-        var y = 0;
-        if (Keyboard.GetState().IsKeyDown(Keys.W) ||
-            Keyboard.GetState().IsKeyDown(Keys.Up))
-        {
-            y = -1;
-        }if (Keyboard.GetState().IsKeyDown(Keys.S) ||
-            Keyboard.GetState().IsKeyDown(Keys.Down))
-        {
-            y = 1;
-        }if (Keyboard.GetState().IsKeyDown(Keys.A) ||
-            Keyboard.GetState().IsKeyDown(Keys.Left))
-        {
-            x = -1;
-        }if (Keyboard.GetState().IsKeyDown(Keys.D) ||
-            Keyboard.GetState().IsKeyDown(Keys.Right))
-        {
-            x = 1;
-        }
+        var direction = Vector2.Zero;
         
-        var vectorVelocity = new Vector2(x, y) * speed;
-        Position.X += (int)vectorVelocity.X;
-        Position.Y += (int)vectorVelocity.Y;
+        var keyBoardState = Keyboard.GetState();
+
+        _isMoving = false;
+        
+        if (keyBoardState.IsKeyDown(Keys.W) || keyBoardState.IsKeyDown(Keys.Up))
+        {
+            direction.Y = -1;
+            _currentAnimation = _walkUpAnimation;
+            _isMoving = true;
+        }
+        if (keyBoardState.IsKeyDown(Keys.S) || keyBoardState.IsKeyDown(Keys.Down))
+        {
+            direction.Y = 1;
+            _currentAnimation = _walkDownAnimation;
+            _isMoving = true;
+        }
+        if (keyBoardState.IsKeyDown(Keys.A) || keyBoardState.IsKeyDown(Keys.Left))
+        {
+            direction.X = -1;
+            _currentAnimation = _walkLeftAnimation;
+            _isMoving = true;
+        }
+        if (keyBoardState.IsKeyDown(Keys.D) || keyBoardState.IsKeyDown(Keys.Right))
+        {
+            direction.X = 1;
+            _currentAnimation = _walkRightAnimation;
+            _isMoving = true;
+        }
+
+        /*
+        if (!_isMoving)
+        {
+            _currentAnimation = _idleAnimation;    
+        }*/
+        
+        if (direction.Length() > 0)
+            direction.Normalize();
+        
+        Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        
+        if (_isMoving)
+        {
+            _currentAnimation.Update(gameTime);
+        }
+        else
+        {
+            _currentAnimation.Update(gameTime);
+        }
+    }
+
+    public static void LoadAnimation(Game game)
+    {
+        var sprite = game.Content.Load<Texture2D>("player");
+        Width = sprite.Width / 3;
+        Height = sprite.Height / 4;
+
+        _walkDownAnimation = new Animation(sprite, Width, Height, 3, 0, 0.1f, true);
+        _walkUpAnimation = new Animation(sprite, Width, Height, 3, 3, 0.1f, true);
+        _walkLeftAnimation = new Animation(sprite, Width, Height, 3, 1, 0.1f, true);
+        _walkRightAnimation = new Animation(sprite, Width, Height, 3, 2, 0.1f, true);
+        _currentAnimation = _walkDownAnimation;
+    }
+
+    public static void Draw(SpriteBatch spriteBatch)
+    {
+        if (_isMoving)
+        {
+            var sourceRectangle = _currentAnimation.GetCurrentFrameRectangle();
+            spriteBatch.Draw(
+                _currentAnimation.SpriteSheet,           
+                PlayerRectangle,                         
+                sourceRectangle,                         
+                Color.White                              
+            );
+        }
+        else
+        {
+            var sourceRectangle = _currentAnimation.GetCalmStateFrame();
+            spriteBatch.Draw(
+                _currentAnimation.SpriteSheet,           
+                PlayerRectangle,                         
+                sourceRectangle,                         
+                Color.White                              
+            );
+        }
     }
 }
