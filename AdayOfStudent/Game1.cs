@@ -60,14 +60,12 @@ public class Game1 : Game
             _sceneManager.SwitchTo("predislovie");
             _menuScene.Reset();
         }
-        
 
         if (_firstStartGameScene.StartTheGame)
         {
             _sceneManager.SwitchTo("gameplay");
+            _firstStartGameScene.StartTheGame = false; 
         }
-        
-        
         
         base.Update(gameTime);
     }
@@ -77,7 +75,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.LightPink);
 
         _spriteBatch.Begin(
-            samplerState: SamplerState.PointClamp,  // или PointWrap, если нужно зацикливание
+            samplerState: SamplerState.PointClamp,  
             blendState: BlendState.AlphaBlend,
             rasterizerState: RasterizerState.CullNone
         );

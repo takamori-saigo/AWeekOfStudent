@@ -17,6 +17,8 @@ public class SceneManager
 
     public void SwitchTo(string name)
     {
+        if (CurrentScene != null && _scenes[name] == CurrentScene)
+            return;
         CurrentScene?.unloadContent();
         CurrentScene = _scenes[name];
         CurrentScene.Initialize();

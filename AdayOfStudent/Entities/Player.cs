@@ -1,3 +1,4 @@
+using System;
 using AdayOfStudent.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -11,22 +12,20 @@ public static class Player
     public static readonly float speed = 130f;
     public static int Width;
     public static int Height;
-    
     private static Animation _walkDownAnimation;
     private static Animation _walkUpAnimation;
     private static Animation _walkLeftAnimation;
     private static Animation _walkRightAnimation;
-    
     private static Animation _currentAnimation;
     private static bool _isMoving;
-    
-        public static Rectangle PlayerRectangle => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+    private static int HitboxPadding = 10; 
+    public static Rectangle PlayerRectangle => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
     
     public static void Move(GameTime gameTime)
     {
         var direction = Vector2.Zero;
         
-        var keyBoardState = Keyboard.GetState();
+        var keyBoardState = Keyboard.GetState();    
 
         _isMoving = false;
         
@@ -58,13 +57,20 @@ public static class Player
         if (direction.Length() > 0)
             direction.Normalize();
         
-        Position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        Vector2 nextPosition = Position + direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        
+        if (!CheckCollision(nextPosition.X, Position.Y))
+        {
+            Position.X = nextPosition.X;
+        }
+        
+        if (!CheckCollision(Position.X, nextPosition.Y))
+        {
+            Position.Y = nextPosition.Y;
+        }
         
         if (_isMoving)
-        {
-            _currentAnimation.Update(gameTime);
-        }
-        else
         {
             _currentAnimation.Update(gameTime);
         }
@@ -89,7 +95,6 @@ public static class Player
     
         var scaledWidth = (int)(Width * scale);
         var scaledHeight = (int)(Height * scale);
-    
         Rectangle scaledRectangle = new Rectangle((int)Position.X, (int)Position.Y, scaledWidth, scaledHeight);
         if (_isMoving)
         {
@@ -111,5 +116,32 @@ public static class Player
                 Color.White                              
             );
         }
+    }
+
+    private static bool CheckCollision(float newX, float newY)
+    {
+        int scaledW = (int)(Width * 4);
+        int scaledH = (int)(Height * 4);
+        
+        Rectangle hitbox = new Rectangle(
+            (int)newX + HitboxPadding, 
+            (int)newY + HitboxPadding, 
+            scaledW - HitboxPadding * 2, 
+            scaledH - HitboxPadding * 2
+        );
+        
+        if (IsTileWallAt(hitbox.Left, hitbox.Top)) return true;
+        if (IsTileWallAt(hitbox.Right, hitbox.Top)) return true;
+        if (IsTileWallAt(hitbox.Left, hitbox.Bottom)) return true;
+        if (IsTileWallAt(hitbox.Right, hitbox.Bottom)) return true;
+
+        return false;
+    }
+    
+    private static bool IsTileWallAt(int pixelX, int pixelY)
+    {
+        var tileX = pixelX / Map.Size;
+        int tileY = pixelY / Map.Size;
+        return Map.IsWall(tileX, tileY);
     }
 }

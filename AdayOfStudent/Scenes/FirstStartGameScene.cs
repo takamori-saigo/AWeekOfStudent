@@ -21,7 +21,7 @@ public class FirstStartGameScene: IScene
         {
             return _isKeyWasPressed;
         }
-        private set{}
+        set{}
     }
 
     public FirstStartGameScene(Game game)
