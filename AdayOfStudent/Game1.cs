@@ -54,7 +54,7 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         _sceneManager.Update(gameTime);
-
+        
         if (_menuScene.StartGameRequested)
         {
             _sceneManager.SwitchTo("predislovie");
@@ -76,7 +76,11 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.LightPink);
 
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(
+            samplerState: SamplerState.PointClamp,  // или PointWrap, если нужно зацикливание
+            blendState: BlendState.AlphaBlend,
+            rasterizerState: RasterizerState.CullNone
+        );
         _sceneManager.Draw(_spriteBatch);
         _spriteBatch.End();
 

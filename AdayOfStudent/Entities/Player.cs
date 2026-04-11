@@ -8,7 +8,7 @@ namespace AdayOfStudent.Entities;
 public static class Player
 {
     public static Vector2 Position;
-    public static readonly float speed = 70f;
+    public static readonly float speed = 130f;
     public static int Width;
     public static int Height;
     
@@ -20,7 +20,7 @@ public static class Player
     private static Animation _currentAnimation;
     private static bool _isMoving;
     
-    public static Rectangle PlayerRectangle => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+        public static Rectangle PlayerRectangle => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
     
     public static void Move(GameTime gameTime)
     {
@@ -54,12 +54,6 @@ public static class Player
             _currentAnimation = _walkRightAnimation;
             _isMoving = true;
         }
-
-        /*
-        if (!_isMoving)
-        {
-            _currentAnimation = _idleAnimation;    
-        }*/
         
         if (direction.Length() > 0)
             direction.Normalize();
@@ -91,12 +85,18 @@ public static class Player
 
     public static void Draw(SpriteBatch spriteBatch)
     {
+        var scale = 4.0f;
+    
+        var scaledWidth = (int)(Width * scale);
+        var scaledHeight = (int)(Height * scale);
+    
+        Rectangle scaledRectangle = new Rectangle((int)Position.X, (int)Position.Y, scaledWidth, scaledHeight);
         if (_isMoving)
         {
             var sourceRectangle = _currentAnimation.GetCurrentFrameRectangle();
             spriteBatch.Draw(
                 _currentAnimation.SpriteSheet,           
-                PlayerRectangle,                         
+                scaledRectangle,                         
                 sourceRectangle,                         
                 Color.White                              
             );
@@ -106,7 +106,7 @@ public static class Player
             var sourceRectangle = _currentAnimation.GetCalmStateFrame();
             spriteBatch.Draw(
                 _currentAnimation.SpriteSheet,           
-                PlayerRectangle,                         
+                scaledRectangle,                         
                 sourceRectangle,                         
                 Color.White                              
             );

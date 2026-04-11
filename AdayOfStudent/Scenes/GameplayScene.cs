@@ -1,3 +1,4 @@
+    using System;
     using AdayOfStudent.Entities;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -19,6 +20,7 @@
         public void Initialize()
         {
             ExitToMenuRequested = false;
+            Player.Position = new Vector2(_game.GraphicsDevice.Viewport.Width / 2 - 53, _game.GraphicsDevice.Viewport.Height / 2 + 150);
         }
 
         public void LoadContent()
@@ -32,7 +34,8 @@
             {
                 ExitToMenuRequested = true;
             }
-            
+
+            Console.WriteLine(Player.Position);
             Player.Move(gameTime);
         }
 
