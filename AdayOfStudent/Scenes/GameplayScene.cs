@@ -9,7 +9,7 @@
     public class GameplayScene: IScene
     {
         private Game _game;
-        private Vector2 _playerStartPosition = new Vector2(-53, 150);
+        private Vector2 _playerStartPosition = new Vector2(400, 150);
         public bool ExitToMenuRequested { get; private set; }
         private Camera _camera;
 
@@ -22,7 +22,7 @@
         {
             ExitToMenuRequested = false;
             Player.Position = _playerStartPosition;
-            Map.SetGame(_game);
+            Map.InitializeMap(_game);
             _camera = new Camera(_game.GraphicsDevice.Viewport);
         }
 
@@ -43,7 +43,11 @@
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(transformMatrix: _camera.GetTransformation());
+            spriteBatch.Begin(
+                samplerState: SamplerState.PointClamp,
+                transformMatrix: _camera.GetTransformation() 
+            );            
+            
             Map.Draw(spriteBatch);
             Player.Draw(spriteBatch);
             spriteBatch.End();

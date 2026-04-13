@@ -74,13 +74,8 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.LightPink);
 
-        _spriteBatch.Begin(
-            samplerState: SamplerState.PointClamp,  
-            blendState: BlendState.AlphaBlend,
-            rasterizerState: RasterizerState.CullNone
-        );
+        
         _sceneManager.Draw(_spriteBatch);
-        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
